@@ -18,3 +18,12 @@
     transform: translateY(0);
   }
 }
+
+/* ConnectButton.module.css */
+.transparentBackground {
+  background-color: transparent !important;
+}
+
+.uppercaseText {
+  text-transform: uppercase !important;
+}

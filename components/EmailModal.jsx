@@ -21,8 +21,8 @@ const EmailModal = ({ showModal, closeModal }) => {
 
   return (
     showModal && (
-      <div className="fixed inset-0 flex items-center justify-center z-50">
-        <div className="bg-white p-6 rounded shadow-lg">
+      <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
+        <div className="bg-white p-6 rounded-lg w-[400px] mx-[380px] py-8">
           <h2 className="text-xl mb-4">Please enter your email</h2>
           <form onSubmit={handleSubmit}>
             <input
