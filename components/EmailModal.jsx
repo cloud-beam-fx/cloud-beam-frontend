@@ -24,12 +24,16 @@ const EmailModal = ({ showModal, closeModal }) => {
       <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
         <div className="bg-white p-6 rounded-lg w-[400px] mx-[380px] py-8">
           <h2 className="text-xl mb-4">Please enter your email</h2>
+          <p className="text-sm">
+            Stay in the Loop: Enter your email to receive the latest updates
+            about your functions straight to your inbox!
+          </p>
           <form onSubmit={handleSubmit}>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="border border-gray-300 p-2 rounded w-full mb-4"
+              className="border border-gray-300 p-2 rounded w-full mb-4 mt-4"
               placeholder="Email address"
               required
             />
