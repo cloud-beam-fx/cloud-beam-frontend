@@ -44,8 +44,8 @@ const Navbar = ({ bgColor, textColor, menuColor }) => {
     <div className={`border-gray-200 border-b-[1px] mb-12 4`}>
       <div className="mx-[40px] flex justify-between align-items py-4">
         <Link href="/dashboard" passHref>
-          <div className={`cursor-pointer text-${textColor}`}>
-            x<span className={`text-${textColor}`}>Functions</span>
+          <div className={`cursor-pointer text-white`}>
+            Cloud<span className={`text-black`}>beam</span>
           </div>
         </Link>
         <button
@@ -62,7 +62,7 @@ const Navbar = ({ bgColor, textColor, menuColor }) => {
             className={`fixed top-0 left-0 w-full h-full bg-black opacity-90 z-10 transition-opacity duration-300`}
           >
             <div className="text-white border-b-2">
-              <h1 className="ml-[30px] mt-[25px] pb-6">xFunctions</h1>
+              <h1 className="ml-[30px] mt-[25px] pb-6">Cloudbeam</h1>
             </div>
             <button
               className="absolute top-0 right-4 m-4 text-white border-[1px] p-2 border-gray-500 font-bold"
@@ -75,13 +75,13 @@ const Navbar = ({ bgColor, textColor, menuColor }) => {
                 <a href="#">Dashboard</a>
               </li>
               <li>
-                <a href="#">Settings</a>
+                <a href="#">Edit Functions</a>
               </li>
               <li>
                 <a href="#">Functions</a>
               </li>
               <li>
-                <a href="#">Docs</a>
+                <a href="#">Services</a>
               </li>
               <li className="uppercase">
                 <a href="#" className="uppercase">

@@ -1,17 +1,31 @@
-import React from 'react';
+import { useState } from 'react';
 import FunctionsAvailable from './FunctionsAvailable';
 import Link from 'next/link';
+import RegisterFunctionsModal from './RegisterFunctionsModal';
 
 const FunctionCalls = () => {
+  const [showModal, setShowModal] = useState(false);
+
+  const toggleModal = () => {
+    setShowModal(true);
+  };
+
+  const handleOnClose = () => {
+    setShowModal(false);
+  };
+
   return (
     <div className="border-2 p-6 w-[50%] text-white">
       <div className="flex justify-between items-center uppercase">
         <h3 className="font-semibold text-md">Functions Available</h3>
-        <Link href="/register-functions">
-          <span className="border-white border-[1px] p-1 text-sm">
-            Register Functions <span className="font-bold ">+</span>
-          </span>
-        </Link>
+        {/* <Link href="/register-functions"> */}
+        <span
+          className="border-white border-[1px] p-1 text-sm cursor-pointer"
+          onClick={toggleModal}
+        >
+          Register Functions <span className="font-bold ">+</span>
+        </span>
+        {/* </Link> */}
       </div>
 
       <div className="flex items-center justify-between mt-8 mx-[60px]">
@@ -30,6 +44,10 @@ const FunctionCalls = () => {
           <p className="text-gray-300">Total</p>
         </div>
       </div>
+      <RegisterFunctionsModal
+        openModal={showModal}
+        handleOnClose={handleOnClose}
+      />
     </div>
   );
 };
