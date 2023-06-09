@@ -1,5 +1,6 @@
 import React from 'react';
 import Navbar from '@/components/Navbar';
+import RegisterFunctionsForm from '@/components/RegisterFunctionsForm';
 
 const RegisterFunctions = () => {
   return (
@@ -8,7 +9,7 @@ const RegisterFunctions = () => {
         <Navbar textColor="#388EE4" />
       </div>
       <div>
-        
+        <RegisterFunctionsForm />
       </div>
     </div>
   );

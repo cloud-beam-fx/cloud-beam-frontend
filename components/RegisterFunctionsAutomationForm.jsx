@@ -3,7 +3,7 @@ import { FaCloudUploadAlt } from 'react-icons/fa';
 import { MdAppRegistration } from 'react-icons/md';
 import TokenSelect from './TokenSelect';
 
-const RegisterFunctionsForm = () => {
+const RegisterFunctionsAutomationForm = () => {
   const [secret, setSecret] = useState('');
   const [targetContract, setTargetContract] = useState('');
   const [adminAddress, setAdminAddress] = useState('');
@@ -187,4 +187,4 @@ const RegisterFunctionsForm = () => {
   );
 };
 
-export default RegisterFunctionsForm;
+export default RegisterFunctionsAutomationForm;
