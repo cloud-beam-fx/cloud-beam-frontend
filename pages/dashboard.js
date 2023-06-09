@@ -9,7 +9,7 @@ const Dashboard = () => {
   return (
     <div>
       <div className="bg-[#116ECB]">
-        <Navbar bgColor="#116ECB" textColor="#fff" />
+        <Navbar bgColor="#116ECB" text1Color="#FFFFFF" text2Color="#FFFFFF" />
         <DashboardHeader />
         <History />
         <FunctionCallChart />

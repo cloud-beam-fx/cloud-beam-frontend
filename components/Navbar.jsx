@@ -5,9 +5,9 @@ import Link from 'next/link';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import styles from './ConnectButton.module.css';
 import { useAccount } from 'wagmi';
-import EmailModal from './EmailModal';
+import EmailModal from './modals/EmailModal';
 
-const Navbar = ({ bgColor, textColor, menuColor }) => {
+const Navbar = ({ bgColor, text1Color, text2Color, menuColor }) => {
   const { isConnected } = useAccount();
   const [walletConnected, setWalletConnected] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -44,17 +44,20 @@ const Navbar = ({ bgColor, textColor, menuColor }) => {
     <div className={`border-gray-200 border-b-[1px] mb-12 4`}>
       <div className="mx-[40px] flex justify-between align-items py-4">
         <Link href="/dashboard" passHref>
-          <div className={`cursor-pointer text-white`}>
-            Cloud<span className={`text-black`}>beam</span>
+          <div
+            className={`cursor-pointer text-${text1Color} font-bold text-lg`}
+          >
+            <span className={`text-${text2Color}`}>Cloud</span>
+            <span className={`text-blue-600`}>beam</span>
           </div>
         </Link>
         <button
           onClick={toggleNavbar}
-          className={`navbar-toggle transition-all duration-300 text-${textColor}`}
+          className={`navbar-toggle transition-all duration-300 text-${text1Color}`}
         >
           <RxHamburgerMenu
             className={`text-3xl`}
-            style={{ color: textColor }}
+            style={{ color: text1Color }}
           />
         </button>
         {isOpen && (

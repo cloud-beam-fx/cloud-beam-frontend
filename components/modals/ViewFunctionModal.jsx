@@ -1,7 +1,7 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState } from 'react';
 
-const RegisterFunctionsModal = ({ openModal, handleOnClose }) => {
+const ViewFunctionModal = ({ openModal, handleOnClose, functionID }) => {
   return (
     <>
       <Transition appear show={openModal} as={Fragment}>
@@ -31,30 +31,23 @@ const RegisterFunctionsModal = ({ openModal, handleOnClose }) => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full h-[280px] max-w-2xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900 text-center"
+                    className="text-lg font-medium leading-6 text-gray-900 text-left mt-5"
                   >
-                    Register Function
+                    <span className="text-2xl font-bold">
+                      {' '}
+                      Request ID: {functionID}
+                    </span>
+
+                    <p className="text-sm text-[#a1a2a3]">
+                      Request result displayed below.
+                    </p>
                   </Dialog.Title>
 
-                  <div className="mt-4 text-center">
-                    <button
-                      type="button"
-                      className=" bg-white text-[#388EE4] focus:ring-1 focus:outline-none focus:ring-[#388EE4] font-medium rounded-sm text-sm px-4 py-2 hover:opacity-70"
-                    >
-                      <a href="">Without Automation</a>
-                    </button>
-                    &nbsp;&nbsp;&nbsp;
-                    <button
-                      type="button"
-                      className="text-white bg-[#388EE4] focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-sm text-sm px-4 py-3 hover:opacity-70"
-                    >
-                      <a href="/register-functions-automation">
-                        With Automation
-                      </a>
-                    </button>
+                  <div className="mt-8 text-start bg-[#388ee41a] p-4 italic text-[#b2b5b8bf]">
+                    <span>byte result from making request</span>
                     &nbsp;&nbsp;
                   </div>
                 </Dialog.Panel>
@@ -67,4 +60,4 @@ const RegisterFunctionsModal = ({ openModal, handleOnClose }) => {
   );
 };
 
-export default RegisterFunctionsModal;
+export default ViewFunctionModal;

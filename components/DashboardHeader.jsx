@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import FunctionCalls from './FunctionCalls';
-import TopUpModal from './TopUpModal';
+import TopUpModal from './modals/TopUpModal';
 
 const DashboardHeader = () => {
   const [showModal, setShowModal] = useState(false);

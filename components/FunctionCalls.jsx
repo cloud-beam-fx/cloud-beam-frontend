@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import FunctionsAvailable from './FunctionsAvailable';
 import Link from 'next/link';
-import RegisterFunctionsModal from './RegisterFunctionsModal';
+import RegisterFunctionsModal from './modals/RegisterFunctionsModal';
 
 const FunctionCalls = () => {
   const [showModal, setShowModal] = useState(false);

@@ -1,6 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState } from 'react';
-import TopUpStats from './TopUpStats';
+import TopUpStats from '../TopUpStats';
 
 const tokens = ['usdt', 'eth', 'dai', 'usdc', 'mat'];
 
