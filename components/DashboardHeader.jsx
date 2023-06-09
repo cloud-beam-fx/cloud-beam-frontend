@@ -1,9 +1,44 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import FunctionCalls from './FunctionCalls';
 import TopUpModal from './modals/TopUpModal';
+import { ethers } from 'ethers';
+import { deployedAddresses } from '@/constants';
+import FunctionsKit from 'functions-kit';
+
+const functionKit = new FunctionsKit({
+  rpcUrl: process.env.NEXT_PUBLIC_ALCHEMY_URL,
+  funcClientAddress: deployedAddresses.FuncClient,
+  funcRegAddress: deployedAddresses.FuncReg,
+  payMasterAddress: deployedAddresses.PayMaster,
+});
 
 const DashboardHeader = () => {
   const [showModal, setShowModal] = useState(false);
+  const [balance, setBalance] = useState('');
+
+  const adminAddress = '0xaF93083C3c81e7070c520bfe72CD0B96FA916cd0';
+  const tokenType = 'ETH';
+
+  const getAdminBalance = async () => {
+    try {
+      const balance = await functionKit.getAdminBalance(
+        adminAddress,
+        tokenType
+      );
+
+      setBalance(balance);
+      console.log(balance);
+    } catch (error) {
+      console.log(error.message);
+    }
+    // const fetchedBalance = await getAdminBalance(adminAddress, tokenType);
+    // setBalance(fetchedBalance);
+    // console.log(fetchedBalance);
+  };
+
+  useEffect(() => {
+    getAdminBalance();
+  }, []);
 
   const toggleModal = () => {
     setShowModal(true);
@@ -25,7 +60,7 @@ const DashboardHeader = () => {
 
         <div className="border-2 pr-[60px] pt-[20px] pb-[20px] pl-[15px] text-white">
           <h1 className="font-semibold text-xl">Balance</h1>
-          <h2 className="mt-3 font-bold text-xl">406.02 ETH</h2>
+          <h2 className="mt-3 font-bold text-xl">{balance} ETH</h2>
           <p className="mt-2 uppercase">Available Balance</p>
 
           <div className="flex items-left gap-8 mt-4 text-white">

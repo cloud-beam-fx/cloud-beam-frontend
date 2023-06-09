@@ -2,47 +2,89 @@ import { useState } from 'react';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 import { MdAppRegistration } from 'react-icons/md';
 import TokenSelect from './TokenSelect';
+import { ethers } from 'ethers';
+import { deployedAddresses } from '@/constants';
+import FunctionsKit from 'functions-kit';
+
+const tokenType = 'ETH';
+
+const functionKit = new FunctionsKit({
+  rpcUrl: process.env.NEXT_PUBLIC_ALCHEMY_URL,
+  funcClientAddress: deployedAddresses.FuncClient,
+  funcRegAddress: deployedAddresses.FuncReg,
+  payMasterAddress: deployedAddresses.PayMaster,
+});
 
 const RegisterFunctionsAutomationForm = () => {
+  const [sourceFile, setSourceFile] = useState('');
+  const [argument, setArgument] = useState('');
+  const [interval, setInterval] = useState(0);
+
+  const [returnType, setReturnType] = useState('');
   const [secret, setSecret] = useState('');
-  const [targetContract, setTargetContract] = useState('');
-  const [adminAddress, setAdminAddress] = useState('');
-  const [sourceFile, setSourceFile] = useState(null);
-  const [configFile, setConfigFile] = useState(null);
   const [isFormValid, setIsFormValid] = useState(false);
+  const [hours, setHours] = useState(0);
+  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(0);
+
+  const handleArgumentChange = (event) => {
+    setArgument(event.target.value);
+  };
+
+  const handleReturnTypeChange = (event) => {
+    setReturnType(event.target.value);
+  };
 
   const handleSecretChange = (event) => {
     setSecret(event.target.value);
   };
 
-  const handleTargetContractChange = (event) => {
-    setTargetContract(event.target.value);
-  };
-
-  const handleAdminAddressChange = (event) => {
-    setAdminAddress(event.target.value);
-  };
-
   const handleSourceFileChange = (event) => {
-    const selectedFileName = document.getElementById('selectedFileName');
-    if (selectedFileName) {
-      if (event.target.files.length > 0) {
-        selectedFileName.textContent = event.target.files[0].name;
-      } else {
-        selectedFileName.textContent = 'Choose File';
-      }
-    }
-    setSourceFile(event.target.files[0]);
+    setSourceFile(event.target.value);
   };
 
-  // const handleConfigFileChange = (event) => {
-  //   setConfigFile(event.target.files[0]);
-  // };
+  const convertToSeconds = () => {
+    const totalSeconds = hours * 3600 + minutes * 60 + parseInt(seconds);
+    console.log('Total seconds:', totalSeconds);
+    setInterval(totalSeconds);
+  };
+
+  const registerAutoFunction = async (e) => {
+    try {
+      e.preventDefault();
+
+      convertToSeconds();
+
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      console.log(
+        signer,
+        tokenType,
+        sourceFile,
+        argument,
+        secret,
+        interval,
+        returnType
+      );
+
+      const registerFunction = await functionKit.registerAutoFunction(
+        signer,
+        tokenType,
+        sourceFile,
+        argument,
+        secret,
+        interval,
+        returnType
+      );
+      return registerFunction;
+    } catch (error) {
+      console.log(e.message);
+    }
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // Perform form validation
     if (
       secret.trim() === '' ||
       targetContract.trim() === '' ||
@@ -79,24 +121,41 @@ const RegisterFunctionsAutomationForm = () => {
       <div className="flex justify-start ml-20 mt-8">
         <form
           className="w-[600px] h-full p-6 bg-white rounded shadow-md py-20 mb-20"
-          onSubmit={handleSubmit}
+          onSubmit={registerAutoFunction}
         >
           <div className="mb-4 flex items-center">
             <label
               htmlFor="targetContract"
               className="block text-gray-700 font-bold mb-2 w-full"
             >
-              Target Contract:
+              Source File:
             </label>
             <input
               type="text"
               id="targetContract"
-              value={targetContract}
-              onChange={handleTargetContractChange}
+              value={sourceFile}
+              onChange={handleSourceFileChange}
               className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring focus:border-blue-500"
               required
             />
           </div>
+          <div className="mb-4 flex items-center mt-8">
+            <label
+              htmlFor="functionName"
+              className="block text-gray-700 font-bold mb-2 w-full"
+            >
+              Argument:
+            </label>
+            <input
+              type="text"
+              id="secret"
+              value={argument}
+              onChange={handleArgumentChange}
+              className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring focus:border-blue-500"
+              required
+            />
+          </div>
+
           <div className="mb-4 flex items-center mt-8">
             <label
               htmlFor="functionName"
@@ -113,27 +172,63 @@ const RegisterFunctionsAutomationForm = () => {
               required
             />
           </div>
+
           <div className="mb-4 mt-8 flex items-center">
             <label
               htmlFor="adminAddress"
               className="block text-gray-700 font-bold mb-2 w-full"
             >
-              Admin Address:
+              Interval:
             </label>
-            <input
-              type="text"
-              id="adminAddress"
-              value={adminAddress}
-              onChange={handleAdminAddressChange}
-              className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring focus:border-blue-500"
-              required
-            />
+
+            {/* duration start */}
+
+            <div className="flex items-center overflow-hidden">
+              <div className="">
+                <label htmlFor="hours" className="mr-2">
+                  Hours:
+                </label>
+                <input
+                  type="number"
+                  id="hours"
+                  value={hours}
+                  onChange={(e) => setHours(e.target.value)}
+                  className="border border-gray-300 p-1 w-[60px]"
+                />
+              </div>
+              <div className="">
+                <label htmlFor="minutes" className="mr-2">
+                  Minutes:
+                </label>
+                <input
+                  type="number"
+                  id="minutes"
+                  value={minutes}
+                  onChange={(e) => setMinutes(e.target.value)}
+                  className="border border-gray-300 p-1 w-[60px]"
+                />
+              </div>
+              <div className="">
+                <label htmlFor="seconds" className="mr-2">
+                  Seconds:
+                </label>
+                <input
+                  type="number"
+                  id="seconds"
+                  value={seconds}
+                  onChange={(e) => setSeconds(e.target.value)}
+                  className="border border-gray-300 p-1 w-[60px]"
+                />
+              </div>
+            </div>
+
+            {/* duration end */}
           </div>
 
           <div className="mb-4 mt-8 flex items-center">
             <label
               htmlFor="functionName"
-              className="block text-gray-700 font-bold mb-2 w-[310px]"
+              className="block text-gray-700 font-bold mb-2 w-[300px] mr-3"
             >
               Top up Token:
             </label>
@@ -141,30 +236,20 @@ const RegisterFunctionsAutomationForm = () => {
           </div>
 
           <div className="mb-4 mt-8 flex items-center justify gap-[150px]">
-            <h3 className="font-bold mr-4">Javascript File:</h3>
-            <div className="flex flex-col items-center">
-              <h3 className="mb-2 font-semibold">upload your source file</h3>
-              <label
-                htmlFor="sourceFile"
-                className="w-[150px] text-blue-500 border border-blue-500 px-1 py-2 rounded-md font-bold mr-4 cursor-pointer inline-block text-center focus:outline-none focus:ring focus:border-blue-500"
-              >
-                <span className="flex uppercase gap-2 items-center justify-center text-sm">
-                  <FaCloudUploadAlt />
-                  Source File
-                </span>
-                <input
-                  type="file"
-                  id="sourceFile"
-                  accept=".js"
-                  onChange={handleSourceFileChange}
-                  className="hidden"
-                  required
-                />
-              </label>
-              {sourceFile && (
-                <span id="selectedFileName">{sourceFile.name}</span>
-              )}
-            </div>
+            <label
+              htmlFor="adminAddress"
+              className="block text-gray-700 font-bold mb-2 w-full"
+            >
+              Return Type:
+            </label>
+            <input
+              type="text"
+              id="adminAddress"
+              value={returnType}
+              onChange={handleReturnTypeChange}
+              className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring focus:border-blue-500"
+              required
+            />
           </div>
 
           {!isFormValid && (

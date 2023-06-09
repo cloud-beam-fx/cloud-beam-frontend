@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Select from 'react-select';
 
 const tokenLogos = {
+  ETH: 'https://cryptologos.cc/logos/ethereum-eth-logo.png',
   MAT: 'https://cryptologos.cc/logos/polygon-matic-logo.png',
   USDT: 'https://cryptologos.cc/logos/tether-usdt-logo.png',
   USDC: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Circle_USDC_Logo.svg/512px-Circle_USDC_Logo.svg.png?20220815163658',
@@ -17,9 +18,15 @@ const customStyles = {
     innerHeight: '50%',
     outerHeight: '50px',
   }),
+  container: (provided) => ({
+    ...provided,
+    width: '280px',
+  }),
 };
 
-const CustomSelect = ({ onChange }) => {
+const CustomSelect = () => {
+  const [selectedToken, setSelectedToken] = useState(null);
+
   const options = Object.entries(tokenLogos).map(([token, logoUrl]) => ({
     value: token,
     label: (
@@ -27,7 +34,7 @@ const CustomSelect = ({ onChange }) => {
         <img
           src={logoUrl}
           alt={token}
-          style={{ width: '20px', marginRight: '8px' }}
+          style={{ width: '20px', marginRight: '8px', display: 'flex' }}
         />
         {token}
       </>
@@ -35,7 +42,7 @@ const CustomSelect = ({ onChange }) => {
   }));
 
   const handleChange = (selectedOption) => {
-    onChange({ target: { value: selectedOption.value } });
+    setSelectedToken(selectedOption ? selectedOption.value : null);
   };
 
   return (
@@ -45,7 +52,12 @@ const CustomSelect = ({ onChange }) => {
         options={options}
         placeholder="Click to choose your preferred token"
         onChange={handleChange}
-        className='bg-gray-300'
+        className="bg-gray-300"
+        value={
+          selectedToken
+            ? options.find((option) => option.value === selectedToken)
+            : null
+        }
       />
     </div>
   );

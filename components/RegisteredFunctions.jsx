@@ -1,8 +1,36 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { AiFillExclamationCircle } from 'react-icons/ai';
 import RegisteredFunctionsTable from './RegisteredFunctionsTable';
+import { deployedAddresses } from '@/constants';
+import FunctionsKit from 'functions-kit';
+
+const functionKit = new FunctionsKit({
+  rpcUrl: process.env.NEXT_PUBLIC_ALCHEMY_URL,
+  funcClientAddress: deployedAddresses.FuncClient,
+  funcRegAddress: deployedAddresses.FuncReg,
+  payMasterAddress: deployedAddresses.PayMaster,
+});
+
+const adminAddress = '0xaF93083C3c81e7070c520bfe72CD0B96FA916cd0';
+const tokenType = 'ETH';
 
 const RegisteredFunctions = () => {
+  const [functionID, setFunctionID] = useState('');
+
+  const getAdminFunctions = async () => {
+    try {
+      const functions = await functionKit.getAdminFunctions(adminAddress);
+
+      setFunctionID(functions);
+      console.log(functions);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  useEffect(() => {
+    getAdminFunctions();
+  }, []);
+
   return (
     <div className="px-[80px]">
       <div>

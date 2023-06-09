@@ -2,26 +2,53 @@ import { useState } from 'react';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 import { MdAppRegistration } from 'react-icons/md';
 import TokenSelect from './TokenSelect';
+import { useAccount } from 'wagmi';
+import { deployedAddresses } from '@/constants';
+import { ethers } from 'ethers';
+import FunctionsKit from 'functions-kit';
+
+const functionKit = new FunctionsKit({
+  rpcUrl: process.env.NEXT_PUBLIC_ALCHEMY_URL,
+  funcClientAddress: deployedAddresses.FuncClient,
+  funcRegAddress: deployedAddresses.FuncReg,
+  payMasterAddress: deployedAddresses.PayMaster,
+});
+
+const tokenType = 'ETH';
 
 const RegisterFunctionsForm = () => {
-  const [targetContract, setTargetContract] = useState('');
+  const [response, setResponse] = useState('');
   const [sourceFile, setSourceFile] = useState(null);
   const [isFormValid, setIsFormValid] = useState(false);
 
-  const handleTargetContractChange = (event) => {
-    setTargetContract(event.target.value);
+  const { address } = useAccount();
+
+  const caller = address;
+
+  const handleResponseChange = (event) => {
+    setResponse(event.target.value);
   };
 
   const handleSourceFileChange = (event) => {
-    const selectedFileName = document.getElementById('selectedFileName');
-    if (selectedFileName) {
-      if (event.target.files.length > 0) {
-        selectedFileName.textContent = event.target.files[0].name;
-      } else {
-        selectedFileName.textContent = 'Choose File';
-      }
+    setSourceFile(event.target.value);
+  };
+
+  const registerDefaultFunction = async (e) => {
+    try {
+      e.preventDefault();
+
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+
+      const functionId = await functionKit.registerFunction(
+        signer,
+        caller,
+        tokenType,
+        response
+      );
+    } catch (error) {
+      console.log(e.message);
     }
-    setSourceFile(event.target.files[0]);
   };
 
   const handleSubmit = (event) => {
@@ -52,20 +79,19 @@ const RegisterFunctionsForm = () => {
       <div className="flex justify-start ml-20 mt-8">
         <form
           className="w-[600px] h-full p-6 bg-white rounded shadow-md py-20 mb-20"
-          onSubmit={handleSubmit}
+          onSubmit={registerDefaultFunction}
         >
           <div className="mb-4 flex items-center">
             <label
               htmlFor="targetContract"
               className="block text-gray-700 font-bold mb-2 w-full"
             >
-              Target Contract:
+              Caller:
             </label>
             <input
               type="text"
               id="targetContract"
-              value={targetContract}
-              onChange={handleTargetContractChange}
+              value={address}
               className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring focus:border-blue-500"
               required
             />
@@ -79,6 +105,23 @@ const RegisterFunctionsForm = () => {
               Top up Token:
             </label>
             <TokenSelect />
+          </div>
+
+          <div className="mb-4 flex items-center">
+            <label
+              htmlFor="targetContract"
+              className="block text-gray-700 font-bold mb-2 w-full"
+            >
+              Response Return type:
+            </label>
+            <input
+              type="text"
+              id="targetContract"
+              value={response}
+              onChange={handleResponseChange}
+              className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring focus:border-blue-500"
+              required
+            />
           </div>
 
           {!isFormValid && (
