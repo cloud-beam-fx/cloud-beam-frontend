@@ -2,7 +2,7 @@ import '@/styles/globals.css';
 import { darkTheme } from '@rainbow-me/rainbowkit';
 import { getDefaultWallets } from '@rainbow-me/rainbowkit';
 import { configureChains, createClient, WagmiConfig } from 'wagmi';
-import { polygonMumbai } from '@wagmi/core/chains';
+import { sepolia } from '@wagmi/core/chains';
 import { publicProvider } from 'wagmi/providers/public';
 import {
   RainbowKitProvider,
@@ -12,10 +12,7 @@ import '@rainbow-me/rainbowkit/styles.css';
 
 import merge from 'lodash.merge';
 
-const { provider, chains } = configureChains(
-  [polygonMumbai],
-  [publicProvider()]
-);
+const { provider, chains } = configureChains([sepolia], [publicProvider()]);
 
 const { connectors } = getDefaultWallets({
   appName: 'xFunctions',

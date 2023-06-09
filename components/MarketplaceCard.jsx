@@ -14,10 +14,10 @@ const MarketplaceCard = ({ img, title, description }) => {
 
   return (
     <div className="bg-white p-4 shadow-2xl py-16 rounded-2xl flex flex-col justify-between">
-      <div>
+      <div className='ml-4'>
         <img src={img} alt="functions" />
-        <h1 className="text-[#388EE4] font-bold mt-2">{title}</h1>
-        <div className="description-container h-20 overflow-hidden mt-4">
+        <h1 className="text-[#388EE4] font-bold mt-4">{title}</h1>
+        <div className="description-container h-18 overflow-hidden mt-4">
           <p>{description}</p>
         </div>
       </div>

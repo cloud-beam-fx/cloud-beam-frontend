@@ -41,7 +41,7 @@ const functions = [
 
 const FunctionsMarketplace = () => {
   return (
-    <div className="mx-[100px]">
+    <div className="mx-[100px] pb-20">
       <div>
         <h1 className="text-2xl font-bold">Functions Marketplace</h1>
         <p className="text-semibold">
