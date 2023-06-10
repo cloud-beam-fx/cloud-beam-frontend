@@ -35,9 +35,7 @@ export default function App({ Component, pageProps }) {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains} theme={myTheme} coolMode>
-        {/* <DomainContextProvider> */}
         <Component {...pageProps} />
-        {/* </DomainContextProvider> */}
       </RainbowKitProvider>
     </WagmiConfig>
   );

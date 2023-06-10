@@ -34,7 +34,9 @@ const Dashboard = () => {
             <DashboardHeader />
             <History />
             <FunctionCallChart />
-            <RegisteredFunctions />
+            <div className="bg-white">
+              <RegisteredFunctions />
+            </div>
           </div>
         )}
         {!isConnected && (

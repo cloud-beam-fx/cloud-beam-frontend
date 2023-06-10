@@ -5,6 +5,7 @@ import TokenSelect from './TokenSelect';
 import { ethers } from 'ethers';
 import { deployedAddresses } from '@/constants';
 import FunctionsKit from 'functions-kit';
+import { AiOutlinePlus } from 'react-icons/ai';
 
 const tokenType = 'ETH';
 
@@ -26,6 +27,17 @@ const RegisterFunctionsAutomationForm = () => {
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
+  const [dynamicInputs, setDynamicInputs] = useState(['']);
+
+  const addInput = () => {
+    setDynamicInputs([...dynamicInputs, '']);
+  };
+
+  const handleChange = (e, index) => {
+    const newInputs = [...dynamicInputs];
+    newInputs[index] = e.target.value;
+    setDynamicInputs(newInputs);
+  };
 
   const handleArgumentChange = (event) => {
     setArgument(event.target.value);
@@ -140,20 +152,25 @@ const RegisterFunctionsAutomationForm = () => {
             />
           </div>
           <div className="mb-4 flex items-center mt-8">
-            <label
-              htmlFor="functionName"
-              className="block text-gray-700 font-bold mb-2 w-full"
-            >
-              Argument:
+            <label className="block">
+              <span className="text-gray-700">Label</span>
+              {dynamicInputs.map((input, index) => (
+                <input
+                  key={index}
+                  type="text"
+                  value={input}
+                  onChange={(e) => handleChange(e, index)}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+              ))}
             </label>
-            <input
-              type="text"
-              id="secret"
-              value={argument}
-              onChange={handleArgumentChange}
-              className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring focus:border-blue-500"
-              required
-            />
+            <button
+              type="button"
+              onClick={addInput}
+              className="flex items-center justify-center w-10 h-10 bg-blue-500 text-white rounded-full focus:outline-none"
+            >
+              <AiOutlinePlus />
+            </button>
           </div>
 
           <div className="mb-4 flex items-center mt-8">

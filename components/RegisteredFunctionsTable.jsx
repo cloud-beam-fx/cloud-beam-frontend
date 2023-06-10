@@ -4,7 +4,13 @@ import ViewFunctionModal from './modals/ViewFunctionModal';
 
 const functionID = 'Tnfsk34rdfj0';
 
-const RegisteredFunctionsTable = () => {
+const RegisteredFunctionsTable = ({
+  functionId,
+  admin,
+  caller,
+  functionState,
+  topUpToken,
+}) => {
   const [openModal, setOpenModal] = useState(false);
 
   const toggleModal = () => {
@@ -16,7 +22,7 @@ const RegisteredFunctionsTable = () => {
   };
 
   return (
-    <tbody>
+    <>
       <tr className=" text-center">
         <td className=" px-4 py-2">CI/D</td>
         <td className=" px-4 py-2">
@@ -35,47 +41,13 @@ const RegisteredFunctionsTable = () => {
         </td>
         <td className=" px-4 py-2">---</td>
       </tr>
-      <tr className=" text-center">
-        <td className=" px-4 py-2">CI/D</td>
 
-        <td className=" px-4 py-2"> ---</td>
-        <td className=" px-4 py-2 flex justify-center">
-          <button className="flex items-center justify-center border-[#388ee469] border p-2 text-[#116ECB]">
-            <p className="font-bold uppercase">View</p>
-            <IoEyeSharp className="ml-1" />
-          </button>{' '}
-        </td>
-        <td className=" px-4 py-2">---</td>
-      </tr>
-      <tr className=" text-center">
-        <td className=" px-4 py-2">CI/D</td>
-        <td className=" px-4 py-2">---</td>
-        <td className=" px-4 py-2 flex justify-center">
-          <button className="flex items-center justify-center border-[#388ee469] border p-2 text-[#116ECB]">
-            <p className="font-bold uppercase">View</p>
-            <IoEyeSharp className="ml-1" />
-          </button>{' '}
-        </td>
-        <td className=" px-4 py-2">---</td>
-      </tr>
-      <tr className=" text-center">
-        <td className=" px-4 py-2">CI/D</td>
-
-        <td className=" px-4 py-2"> ---</td>
-        <td className=" px-4 py-2 flex justify-center">
-          <button className="flex items-center justify-center border-[#388ee469] border p-2 text-[#116ECB]">
-            <p className="font-bold uppercase">View</p>
-            <IoEyeSharp className="ml-1" />
-          </button>{' '}
-        </td>
-        <td className=" px-4 py-2">---</td>
-      </tr>
       <ViewFunctionModal
         openModal={openModal}
         handleOnClose={closeModal}
         functionID={functionID}
       />
-    </tbody>
+    </>
   );
 };
 

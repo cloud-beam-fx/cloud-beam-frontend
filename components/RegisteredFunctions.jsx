@@ -4,6 +4,8 @@ import RegisteredFunctionsTable from './RegisteredFunctionsTable';
 import { deployedAddresses } from '@/constants';
 import FunctionsKit from 'functions-kit';
 
+const id = 1;
+
 const functionKit = new FunctionsKit({
   rpcUrl: process.env.NEXT_PUBLIC_ALCHEMY_URL,
   funcClientAddress: deployedAddresses.FuncClient,
@@ -15,11 +17,11 @@ const adminAddress = '0xaF93083C3c81e7070c520bfe72CD0B96FA916cd0';
 const tokenType = 'ETH';
 
 const RegisteredFunctions = () => {
-  const [functionID, setFunctionID] = useState('');
+  const [functionID, setFunctionID] = useState([]);
 
-  const getAdminFunctions = async () => {
+  const getRegisteredFunctions = async () => {
     try {
-      const functions = await functionKit.getAdminFunctions(adminAddress);
+      const functions = await functionKit.getRegFunction(id);
 
       setFunctionID(functions);
       console.log(functions);
@@ -27,8 +29,9 @@ const RegisteredFunctions = () => {
       console.log(error.message);
     }
   };
+
   useEffect(() => {
-    getAdminFunctions();
+    getRegisteredFunctions();
   }, []);
 
   return (
@@ -48,7 +51,19 @@ const RegisteredFunctions = () => {
               <th className=" px-4 py-2 ">Status</th>
             </tr>
           </thead>
-          <RegisteredFunctionsTable />
+          <tbody>
+            {functionID.map((func) => (
+              <RegisteredFunctionsTable
+                key={func.functionId}
+                functionId={func.functionId}
+                admin={func.admin}
+                autoConsumer={func.autoConsumer}
+                caller={func.caller}
+                functionState={func.functionState}
+                topUpToken={func.topUpToken}
+              />
+            ))}
+          </tbody>
         </table>
       </div>
     </div>
